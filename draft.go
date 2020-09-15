@@ -1,16 +1,26 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
-func main() {
-	a, b := sumInt(1, 4, 9, 6, 0)
-	fmt.Println(a, b)
+// Vector struct
+type Vector struct {
+	x, y, z float64
 }
 
-func sumInt(a ...int) (int, int) {
-	var sum int
-	for _, elem := range a {
-		sum += elem
-	}
-	return len(a), sum
+func createVector(x float64, y float64, z float64) Vector {
+	return Vector{x, y, z}
+}
+
+func length(v Vector) int {
+	return int(math.Sqrt(v.x*v.x + v.y*v.y + v.z*v.z))
+}
+
+func main() {
+	a := createVector(6, 3, 2)
+	b := createVector(1, 2, 4)
+	fmt.Print(length(a), " ")
+	fmt.Println(length(b))
 }

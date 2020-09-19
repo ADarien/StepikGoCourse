@@ -2,25 +2,38 @@ package main
 
 import (
 	"fmt"
-	"math"
+	"unicode"
 )
 
-// Vector struct
-type Vector struct {
-	x, y, z float64
-}
-
-func createVector(x float64, y float64, z float64) Vector {
-	return Vector{x, y, z}
-}
-
-func length(v Vector) int {
-	return int(math.Sqrt(v.x*v.x + v.y*v.y + v.z*v.z))
-}
-
 func main() {
-	a := createVector(6, 3, 2)
-	b := createVector(1, 2, 4)
-	fmt.Print(length(a), " ")
-	fmt.Println(length(b))
+	var text string
+	fmt.Scan(&text)
+	rs := []rune(text)
+	var isLatin, isOkLetter, isLong bool
+	for i := range rs {
+		if unicode.Is(unicode.Latin, rs[i]) || unicode.IsLetter(rs[i]) || unicode.IsDigit(rs[i]) {
+			isOkLetter = true
+		} else {
+			isOkLetter = false
+			break
+		}
+		if unicode.Is(unicode.Latin, rs[i]) || unicode.IsDigit(rs[i]) {
+			isLatin = true
+		} else {
+			isLatin = false
+			break
+		}
+
+	}
+	if len(rs) >= 5 {
+		isLong = true
+	}
+
+	if isLatin && isOkLetter && isLong {
+		fmt.Println("Ok")
+	} else {
+		fmt.Println("Wrong password")
+	}
+
+	fmt.Println(isLatin, isOkLetter, isLong)
 }

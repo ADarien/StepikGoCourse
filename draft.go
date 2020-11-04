@@ -1,5 +1,6 @@
 package main
 
+<<<<<<< HEAD
 import (
 	"strconv"
 	"unicode"
@@ -29,4 +30,10 @@ func adding(s1, s2 string) int64 {
 
 func main() {
 	adding("%^80", "hhhhh20&&&&nd")
+=======
+import "fmt"
+
+func main() {
+	fmt.Println("Hola!")
+>>>>>>> 80720ac1263e93c69ceb6d72f49a528e68d7f377
 }

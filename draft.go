@@ -1,39 +1,32 @@
 package main
 
 import (
-	"fmt"
+	"strconv"
 	"unicode"
 )
 
+func adding(s1, s2 string) int64 {
+	string1 := ""
+	for _, ch := range s1 {
+		if unicode.IsDigit(ch) {
+			string1 += string(ch)
+		}
+	}
+
+	string2 := ""
+	for _, ch := range s2 {
+		if unicode.IsDigit(ch) {
+			string2 += string(ch)
+		}
+	}
+	ch1, _ := strconv.ParseInt(string1, 10, 64)
+	ch2, _ := strconv.ParseInt(string2, 10, 64)
+	res := ch1 + ch2
+	//fmt.Println(res)
+
+	return res
+}
+
 func main() {
-	var text string
-	fmt.Scan(&text)
-	rs := []rune(text)
-	var isLatin, isOkLetter, isLong bool
-	for i := range rs {
-		if unicode.Is(unicode.Latin, rs[i]) || unicode.IsLetter(rs[i]) || unicode.IsDigit(rs[i]) {
-			isOkLetter = true
-		} else {
-			isOkLetter = false
-			break
-		}
-		if unicode.Is(unicode.Latin, rs[i]) || unicode.IsDigit(rs[i]) {
-			isLatin = true
-		} else {
-			isLatin = false
-			break
-		}
-
-	}
-	if len(rs) >= 5 {
-		isLong = true
-	}
-
-	if isLatin && isOkLetter && isLong {
-		fmt.Println("Ok")
-	} else {
-		fmt.Println("Wrong password")
-	}
-
-	fmt.Println(isLatin, isOkLetter, isLong)
+	adding("%^80", "hhhhh20&&&&nd")
 }

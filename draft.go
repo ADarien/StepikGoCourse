@@ -1,36 +1,44 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 )
 
+// Swap func
+func Swap(x []int, y int) {
+	var a int
+	a = x[y]
+	x[y] = x[y+1]
+	x[y+1] = a
+}
+
+// BubbleSort func
+func BubbleSort(sl []int) {
+	for i := range sl {
+		for j := 0; j < len(sl)-i-1; j++ {
+			if sl[j] > sl[j+1] {
+				Swap(sl, j)
+			}
+		}
+	}
+}
+
 func main() {
-	// str, _ := bufio.NewReader(os.Stdin).ReadString('\n')
-	// str = strings.Trim(str, "\n")
+	fmt.Println("Input 10 numbers:")
+	numbers := bufio.NewReader(os.Stdin)
+	readStr, _, _ := numbers.ReadLine()
+	nums := strings.Split(string(readStr), " ")
 
-	str := "1 149,6088607594936;1 179,0666666666666"
-	lineName := strings.Split(string(str), ";")
-
-	ch1 := strings.Replace(lineName[0], " ", "", 1)
-	ch2 := strings.Replace(lineName[1], " ", "", 1)
-
-	ch1 = strings.Replace(ch1, ",", ".", 1)
-	ch2 = strings.Replace(ch2, ",", ".", 1)
-
-	fmt.Println(ch1)
-	fmt.Println(ch2)
-
-	digit1, _ := strconv.ParseFloat(ch1, 64)
-	digit2, _ := strconv.ParseFloat(ch2, 64)
-
-	// fmt.Println(digit1 / digit2)
-	res := digit1 / digit2
-
-	text := strconv.FormatFloat(res, 'f', 4, 64)
-	rs := []rune(text)
-
-	fmt.Println(rs)
+	var numSlice []int
+	for _, num := range nums {
+		i, _ := strconv.Atoi(num)
+		numSlice = append(numSlice, i)
+	}
+	BubbleSort(numSlice)
+	fmt.Println(numSlice)
 
 }

@@ -1,47 +1,25 @@
 package main
 
 import (
-	"archive/zip"
-	"bytes"
-	"encoding/csv"
+	"bufio"
 	"fmt"
-	"io/ioutil"
-	"log"
-	"net/http"
+	"os"
 )
 
 func main() {
-	const url = "https://github.com/semyon-dev/stepik-go/raw/master/work_with_files/task_csv_1/task.zip"
-	response, err := http.Get(url)
+	pos := 1
+	file, err := os.Open("./task.data")
 	if err != nil {
-		log.Fatal(err)
-	}
-	defer response.Body.Close()
-
-	body, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 	}
 
-	zipReader, err := zip.NewReader(bytes.NewReader(body), int64(len(body)))
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	for _, zipFile := range zipReader.File {
-		file, err := zipFile.Open()
-		if err != nil {
-			log.Fatal(err)
+	br := bufio.NewReader(file)
+	for num, err := br.ReadString(';'); err == nil; num, err = br.ReadString(';') {
+		if num == "0;" || num == "0" {
+			break
 		}
-		defer file.Close()
-
-		csvReader := csv.NewReader(file)
-		rows, err := csvReader.ReadAll()
-		if err != nil || len(rows) != 10 || len(rows[4]) != 10 {
-			continue
-		}
-
-		fmt.Println(rows[4][2])
-		break
+		pos++
 	}
+
+	fmt.Println(pos)
 }

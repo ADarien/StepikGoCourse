@@ -1,25 +1,47 @@
 package main
 
 import (
+	"archive/zip"
+	"bytes"
 	"encoding/csv"
 	"fmt"
-	"os"
-	"path/filepath"
+	"io/ioutil"
+	"log"
+	"net/http"
 )
 
 func main() {
-	filepath.Walk("./task", func(path string, info os.FileInfo, err error) error {
-		if !info.IsDir() {
-			file, _ := os.Open(path)
-			cr := csv.NewReader(file)
-			rowIndex := 0
-			for row, err := cr.Read(); err == nil; row, err = cr.Read() {
-				if rowIndex == 4 {
-					fmt.Println(row[2])
-				}
-				rowIndex++
-			}
+	const url = "https://github.com/semyon-dev/stepik-go/raw/master/work_with_files/task_csv_1/task.zip"
+	response, err := http.Get(url)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer response.Body.Close()
+
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	zipReader, err := zip.NewReader(bytes.NewReader(body), int64(len(body)))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, zipFile := range zipReader.File {
+		file, err := zipFile.Open()
+		if err != nil {
+			log.Fatal(err)
 		}
-		return nil
-	})
+		defer file.Close()
+
+		csvReader := csv.NewReader(file)
+		rows, err := csvReader.ReadAll()
+		if err != nil || len(rows) != 10 || len(rows[4]) != 10 {
+			continue
+		}
+
+		fmt.Println(rows[4][2])
+		break
+	}
 }

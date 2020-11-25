@@ -13,4 +13,3 @@ func main() {
 	a := <-c
 	b := <-c
 	fmt.Println(a * b)
-}
